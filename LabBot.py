@@ -5,7 +5,7 @@ from transformers import pipeline
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+#load_dotenv()
 
 # TODO
 # Add chat history to DialoGPT for context
@@ -96,5 +96,5 @@ async def on_message(message):
 
         await message.channel.send(response)
 
-
-client.run(str(os.getenv('TOKEN')))
+client.run(str(os.environ.get('TOKEN')))
+# client.run(str(os.getenv('TOKEN')))
