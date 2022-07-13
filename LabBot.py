@@ -5,6 +5,13 @@ from transformers import pipeline
 import os
 from dotenv import load_dotenv
 
+from flask import Flask
+
+app = Flask(__name__)
+
+status = ""
+
+
 #load_dotenv()
 
 # TODO
@@ -33,6 +40,7 @@ client = discord.Client()
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
+    status = "We have logged in"
 
 @client.event
 async def on_message(message):
@@ -98,3 +106,7 @@ async def on_message(message):
 
 client.run(str(os.environ.get('TOKEN')))
 # client.run(str(os.getenv('TOKEN')))
+
+@app.route("/")
+def hello_world():
+    return "<p>Hello, World!</p><p>Status: " + status + "</p>"
