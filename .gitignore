@@ -1,2 +1,5 @@
-discordenv
+# For local virtual environment
+*env
+
+# Holds secrets
 .env
