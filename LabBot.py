@@ -1,7 +1,7 @@
 import discord
 # from transformers import AutoModelForQuestionAnswering, AutoTokenizer, pipeline
-from transformers import AutoModelForCausalLM, AutoTokenizer
-from transformers import pipeline
+# from transformers import AutoModelForCausalLM, AutoTokenizer
+# from transformers import pipeline
 import os
 from dotenv import load_dotenv
 
@@ -24,11 +24,11 @@ status = ""
 # nlp = pipeline('question-answering', model=model_name, tokenizer=model_name)
 
 # Conversational
-convo_tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-large")
-convo_model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-large")
+# convo_tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-large")
+# convo_model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-large")
 
 # Summarizer
-summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+# summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
 print('Models and tokenizers successfully loaded')
 
@@ -76,33 +76,33 @@ async def on_message(message):
     #     await message.channel.send(ans)
     #     await message.channel.send('score: ' + score)
 
-    if message.content.startswith('$TLDR'):
-        query = message.content[6::]
+    # if message.content.startswith('$TLDR'):
+    #     query = message.content[6::]
 
-        if(len(query) < 2):
-            messages = [message.content async for message in message.channel.history(limit=30)]
-            messages_str = ".".join(messages)
-            summary = summarizer(messages_str, max_length=130, min_length=30, do_sample=False)
-            await message.channel.send('Summary: ' + summary[0]['summary_text'])
-        elif(len(query) < 35):
-            await message.channel.send('Too short to summarize.')
-        else:
-            summary = summarizer(query, max_length=130, min_length=30, do_sample=False)
-            await message.channel.send('Summary: ' + summary[0]['summary_text'])
+    #     if(len(query) < 2):
+    #         messages = [message.content async for message in message.channel.history(limit=30)]
+    #         messages_str = ".".join(messages)
+    #         summary = summarizer(messages_str, max_length=130, min_length=30, do_sample=False)
+    #         await message.channel.send('Summary: ' + summary[0]['summary_text'])
+    #     elif(len(query) < 35):
+    #         await message.channel.send('Too short to summarize.')
+    #     else:
+    #         summary = summarizer(query, max_length=130, min_length=30, do_sample=False)
+    #         await message.channel.send('Summary: ' + summary[0]['summary_text'])
 
-    if message.content.startswith('$talk'):
-        chat = message.content[6::]
-        if(len(chat) == 0):
-            await message.channel.send("I didn't get that.")
-            return
-        else:
-            print(chat)
+    # if message.content.startswith('$talk'):
+    #     chat = message.content[6::]
+    #     if(len(chat) == 0):
+    #         await message.channel.send("I didn't get that.")
+    #         return
+    #     else:
+    #         print(chat)
         
-        input_ids = convo_tokenizer.encode(chat + convo_tokenizer.eos_token, return_tensors='pt')
-        return_ids = convo_model.generate(input_ids, max_length=1000, pad_token_id=convo_tokenizer.eos_token_id)
-        response = "{}".format(convo_tokenizer.decode(return_ids[:, input_ids.shape[-1]:][0], skip_special_tokens=True))
+    #     input_ids = convo_tokenizer.encode(chat + convo_tokenizer.eos_token, return_tensors='pt')
+    #     return_ids = convo_model.generate(input_ids, max_length=1000, pad_token_id=convo_tokenizer.eos_token_id)
+    #     response = "{}".format(convo_tokenizer.decode(return_ids[:, input_ids.shape[-1]:][0], skip_special_tokens=True))
 
-        await message.channel.send(response)
+    #     await message.channel.send(response)
 
 client.run(str(os.environ.get('TOKEN')))
 # client.run(str(os.getenv('TOKEN')))
