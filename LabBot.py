@@ -129,7 +129,3 @@ async def on_message(message):
 
 client.run(str(os.environ.get('TOKEN')))
 # client.run(str(os.getenv('TOKEN')))
-
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p><p>Status: " + status + "</p>"
